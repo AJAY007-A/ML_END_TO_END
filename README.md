@@ -95,4 +95,3 @@ Open your browser and navigate to `http://localhost:5000` to interact with the C
 - **Primary Regressor**: Random Forest Regressor
 - **Preprocessors**: `StandardScaler` (numerical features) & `OneHotEncoder` (categorical features)
 - **R2 Score**: ~0.90+
-"# ML_END_TO_END" 
