@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Price Predictor | ML Intelligence</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Car Price Predictor</h1>
+        <p>Predict market resale value using Machine Learning</p>
+    </div>
+
+    <form action="/predict" method="POST" class="form-grid">
+        <div class="form-group full-width">
+            <label for="car_name">Car Model / Series</label>
+            <select name="car_name" id="car_name" class="form-control" required>
+                {% for car in car_names %}
+                <option value="{{ car }}" {% if selected_inputs and selected_inputs.car_name == car %}selected{% endif %}>{{ car }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="vehicle_age">Vehicle Age (Years)</label>
+            <input type="number" name="vehicle_age" id="vehicle_age" class="form-control" placeholder="e.g. 5" min="0" max="30" value="{{ selected_inputs.vehicle_age if selected_inputs else 5 }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="km_driven">Kilometers Driven</label>
+            <input type="number" name="km_driven" id="km_driven" class="form-control" placeholder="e.g. 45000" min="0" value="{{ selected_inputs.km_driven if selected_inputs else 45000 }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="seller_type">Seller Type</label>
+            <select name="seller_type" id="seller_type" class="form-control" required>
+                <option value="Individual" {% if selected_inputs and selected_inputs.seller_type == 'Individual' %}selected{% endif %}>Individual</option>
+                <option value="Dealer" {% if selected_inputs and selected_inputs.seller_type == 'Dealer' %}selected{% endif %}>Dealer</option>
+                <option value="Trustmark Dealer" {% if selected_inputs and selected_inputs.seller_type == 'Trustmark Dealer' %}selected{% endif %}>Trustmark Dealer</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="fuel_type">Fuel Type</label>
+            <select name="fuel_type" id="fuel_type" class="form-control" required>
+                <option value="Petrol" {% if selected_inputs and selected_inputs.fuel_type == 'Petrol' %}selected{% endif %}>Petrol</option>
+                <option value="Diesel" {% if selected_inputs and selected_inputs.fuel_type == 'Diesel' %}selected{% endif %}>Diesel</option>
+                <option value="CNG" {% if selected_inputs and selected_inputs.fuel_type == 'CNG' %}selected{% endif %}>CNG</option>
+                <option value="LPG" {% if selected_inputs and selected_inputs.fuel_type == 'LPG' %}selected{% endif %}>LPG</option>
+                <option value="Electric" {% if selected_inputs and selected_inputs.fuel_type == 'Electric' %}selected{% endif %}>Electric</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="transmission_type">Transmission</label>
+            <select name="transmission_type" id="transmission_type" class="form-control" required>
+                <option value="Manual" {% if selected_inputs and selected_inputs.transmission_type == 'Manual' %}selected{% endif %}>Manual</option>
+                <option value="Automatic" {% if selected_inputs and selected_inputs.transmission_type == 'Automatic' %}selected{% endif %}>Automatic</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="mileage">Mileage (kmpl)</label>
+            <input type="number" step="0.1" name="mileage" id="mileage" class="form-control" placeholder="e.g. 18.5" value="{{ selected_inputs.mileage if selected_inputs else 18.5 }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="engine">Engine (CC)</label>
+            <input type="number" step="1" name="engine" id="engine" class="form-control" placeholder="e.g. 1197" value="{{ selected_inputs.engine if selected_inputs else 1197 }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="max_power">Max Power (bhp)</label>
+            <input type="number" step="0.1" name="max_power" id="max_power" class="form-control" placeholder="e.g. 82.0" value="{{ selected_inputs.max_power if selected_inputs else 82.0 }}" required>
+        </div>
+
+        <div class="form-group full-width">
+            <label for="seats">Seats</label>
+            <input type="number" name="seats" id="seats" class="form-control" placeholder="e.g. 5" min="2" max="10" value="{{ selected_inputs.seats if selected_inputs else 5 }}" required>
+        </div>
+
+        <div class="full-width">
+            <button type="submit" class="btn-submit">Calculate Estimated Resale Price</button>
+        </div>
+    </form>
+
+    {% if prediction_text %}
+    <div class="result-card">
+        <h3>Estimated Resale Value</h3>
+        <div class="price">{{ prediction_text }}</div>
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
